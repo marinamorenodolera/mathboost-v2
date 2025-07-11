@@ -1,6 +1,7 @@
 # 🔧 CONFIGURACIÓN SUPABASE MCP - INSTRUCCIONES
 
-## ✅ ARCHIVO MCP CREADO
+## ✅ ARCHIVO MCP 
+CREADO
 El archivo `.cursor/mcp.json` ha sido creado con la estructura correcta.
 
 ## 📋 PASOS PENDIENTES (DEBES COMPLETAR):
