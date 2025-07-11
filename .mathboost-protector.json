@@ -1,0 +1,145 @@
+{
+  "mode": "learning",
+  "description": "Sistema defensivo para proteger el branding perfecto de MathBoost",
+  
+  "protectedFiles": {
+    "description": "Archivos con branding perfecto que NO deben romperse",
+    "whitelist": [
+      "components/MathBoost.jsx",
+      "app/globals.css"
+    ],
+    "protection": "warning-only"
+  },
+
+  "protectedClasses": {
+    "description": "Clases CSS que funcionan perfectamente - NO TOCAR",
+    "glassmorphism": [
+      "bg-white/85",
+      "backdrop-blur-xl", 
+      "border-black/5",
+      "shadow-lg",
+      "hover:bg-white/95",
+      "hover:backdrop-blur-2xl",
+      "hover:shadow-xl",
+      "hover:border-blue-500/20"
+    ],
+    "typography": [
+      "text-9xl",
+      "font-light",
+      "tracking-wider"
+    ],
+    "animations": [
+      "hover:scale-105",
+      "active:scale-95",
+      "transition-all",
+      "duration-500",
+      "duration-1000"
+    ],
+    "gradients": [
+      "from-blue-400",
+      "to-blue-600", 
+      "from-green-400",
+      "to-green-600",
+      "bg-gradient-to-r"
+    ],
+    "spacing": [
+      "px-12",
+      "py-6",
+      "p-10",
+      "p-6",
+      "rounded-2xl",
+      "rounded-3xl"
+    ]
+  },
+
+  "criticalStyles": {
+    "description": "Estilos inline críticos que NO deben modificarse",
+    "mathProblems": {
+      "fontFamily": "Georgia, serif",
+      "warning": "🚨 NO cambiar tipografía de problemas matemáticos - es parte del branding"
+    },
+    "liquidGlass": {
+      "background": "linear-gradient(135deg, #DBEAFE, #EDE9FE)",
+      "backdropFilter": "blur(12px) saturate(200%)",
+      "warning": "🚨 NO modificar efectos liquid glass - funciona perfectamente"
+    },
+    "textShadows": {
+      "problemShadow": "0 4px 20px rgba(0, 0, 0, 0.12)",
+      "warning": "🚨 NO cambiar sombras de texto - parte del branding visual"
+    }
+  },
+
+  "rules": {
+    "learning": {
+      "description": "Modo aprendizaje - reportar sin bloquear",
+      "level": "warning",
+      "actions": [
+        "log",
+        "suggest",
+        "educate"
+      ]
+    },
+    "strict": {
+      "description": "Solo aplicar a archivos nuevos",
+      "level": "error", 
+      "applyTo": ["new-files-only"],
+      "exclude": ["components/MathBoost.jsx", "app/globals.css"]
+    }
+  },
+
+  "suggestions": {
+    "useDesignTokens": {
+      "trigger": "hardcoded-colors",
+      "message": "💡 Considera usar variables CSS del design system: var(--mathboost-primary)",
+      "severity": "info"
+    },
+    "useGlassmorphism": {
+      "trigger": "manual-backdrop-blur",
+      "message": "💡 Usa las clases glassmorphism existentes que funcionan perfectamente",
+      "severity": "info"
+    },
+    "useTypographyScale": {
+      "trigger": "hardcoded-font-sizes",
+      "message": "💡 Considera usar la escala tipográfica: var(--mathboost-text-*)",
+      "severity": "info"
+    }
+  },
+
+  "opportunities": {
+    "description": "Dashboard de mejoras sin romper el branding",
+    "categories": [
+      {
+        "name": "Design Tokens Adoption",
+        "description": "Oportunidades para usar variables CSS",
+        "weight": "low-priority"
+      },
+      {
+        "name": "Component Extraction", 
+        "description": "Patrones que podrían convertirse en componentes",
+        "weight": "medium-priority"
+      },
+      {
+        "name": "Accessibility Improvements",
+        "description": "Mejoras de accesibilidad sin afectar visual",
+        "weight": "high-priority"
+      }
+    ]
+  },
+
+  "allowedModifications": {
+    "description": "Cambios seguros que NO rompen el branding",
+    "safe": [
+      "aria-labels",
+      "accessibility-attributes", 
+      "semantic-html-changes",
+      "performance-optimizations",
+      "new-components-with-existing-styles"
+    ],
+    "requiresReview": [
+      "color-modifications",
+      "spacing-changes",
+      "typography-adjustments",
+      "animation-timing-changes"
+    ]
+  }
+}

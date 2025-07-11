@@ -1,0 +1,237 @@
+/**
+ * MATHBOOST DESIGN SYSTEM - DESIGN TOKENS ONLY
+ * ============================================
+ * 
+ * Variables CSS extraídas del branding perfecto funcionando
+ * NO incluye clases - solo tokens para referencia futura
+ * 
+ * Basado en análisis del código actual en MathBoost.jsx
+ */
+
+:root {
+  /* ============================================
+     COLORES - Extraídos del objeto 'colors'
+     ============================================ */
+  
+  /* Base */
+  --mathboost-background: #FFFFFF;
+  --mathboost-surface: #F8FAFC;
+  --mathboost-surface-hover: #F1F5F9;
+  
+  /* Text Colors */
+  --mathboost-text: #0F172A;
+  --mathboost-text-secondary: #64748B;
+  --mathboost-text-tertiary: #94A3B8;
+  
+  /* Accent Colors */
+  --mathboost-accent: #F8FAFF;
+  --mathboost-accent-active: #E0E7FF;
+  
+  /* Status Colors */
+  --mathboost-success: #ECFDF5;
+  --mathboost-success-text: #059669;
+  --mathboost-error: #FEF2F2;
+  --mathboost-error-text: #DC2626;
+  
+  /* Primary Brand */
+  --mathboost-primary: #3B82F6;
+  --mathboost-primary-light: #DBEAFE;
+  --mathboost-secondary: #8B5CF6;
+  --mathboost-secondary-light: #EDE9FE;
+  
+  /* Borders & Shadows */
+  --mathboost-border: rgba(0, 0, 0, 0.05);
+  --mathboost-shadow: rgba(0, 0, 0, 0.08);
+  --mathboost-shadow-rich: rgba(0, 0, 0, 0.12);
+  
+  /* ============================================
+     GRADIENTES - Extraídos del código
+     ============================================ */
+  
+  /* Button Gradients */
+  --mathboost-gradient-primary-light: linear-gradient(135deg, #DBEAFE, #EDE9FE);
+  --mathboost-gradient-title: linear-gradient(to right, #111827, #4B5563);
+  
+  /* Progress Bar Gradients */
+  --mathboost-gradient-blue: linear-gradient(to right, #60A5FA, #2563EB);
+  --mathboost-gradient-green: linear-gradient(to right, #4ADE80, #16A34A);
+  --mathboost-gradient-purple: linear-gradient(to right, #A78BFA, #8B5CF6);
+  --mathboost-gradient-pink: linear-gradient(to right, #F472B6, #EC4899);
+  --mathboost-gradient-progress: linear-gradient(to right, #60A5FA, #4ADE80);
+  --mathboost-gradient-divider: linear-gradient(to right, transparent, #D1D5DB, transparent);
+  
+  /* ============================================
+     TIPOGRAFÍA - Extraída del código
+     ============================================ */
+  
+  /* Font Families */
+  --mathboost-font-display: 'Inter', -apple-system, sans-serif;
+  --mathboost-font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --mathboost-font-math: 'Georgia', 'Times New Roman', serif;
+  
+  /* Font Sizes - observados en el código */
+  --mathboost-text-xs: 0.75rem;    /* 12px */
+  --mathboost-text-sm: 0.875rem;   /* 14px */
+  --mathboost-text-base: 1rem;     /* 16px */
+  --mathboost-text-lg: 1.125rem;   /* 18px - botones principales */
+  --mathboost-text-xl: 1.25rem;    /* 20px */
+  --mathboost-text-2xl: 1.5rem;    /* 24px */
+  --mathboost-text-3xl: 1.875rem;  /* 30px - números en botones */
+  --mathboost-text-4xl: 2.25rem;   /* 36px - logo mathboost WelcomeScreen */
+  --mathboost-text-6xl: 3.75rem;   /* 60px - emojis */
+  --mathboost-text-9xl: 8rem;      /* 128px - problemas matemáticos */
+  
+  /* Font Weights */
+  --mathboost-font-light: 300;
+  --mathboost-font-normal: 400;
+  --mathboost-font-medium: 500;
+  --mathboost-font-semibold: 600;
+  
+  /* ============================================
+     SPACING - Extraído de clases observadas
+     ============================================ */
+  
+  /* Base Spacing Scale */
+  --mathboost-space-1: 0.25rem;   /* 4px */
+  --mathboost-space-2: 0.5rem;    /* 8px */
+  --mathboost-space-3: 0.75rem;   /* 12px */
+  --mathboost-space-4: 1rem;      /* 16px */
+  --mathboost-space-5: 1.25rem;   /* 20px */
+  --mathboost-space-6: 1.5rem;    /* 24px */
+  --mathboost-space-8: 2rem;      /* 32px */
+  --mathboost-space-10: 2.5rem;   /* 40px */
+  --mathboost-space-12: 3rem;     /* 48px */
+  --mathboost-space-16: 4rem;     /* 64px */
+  --mathboost-space-20: 5rem;     /* 80px */
+  
+  /* Component Specific Spacing */
+  --mathboost-padding-card: 1.5rem;           /* p-6 en cards */
+  --mathboost-padding-button-lg: 1.5rem 0.875rem; /* px-6 py-3.5 botón principal WelcomeScreen */
+  --mathboost-padding-button-md: 2.5rem 1rem; /* p-10 botones setup */
+  --mathboost-padding-button-sm: 1rem 0.5rem; /* p-4 py-2 botones pequeños */
+  
+  /* Welcome Screen Specific Spacing */
+  --mathboost-welcome-hero-spacing: 2rem;     /* mb-8 entre hero y botones */
+  --mathboost-welcome-button-spacing: 1rem;   /* mb-4 entre botones y cards */
+  
+  /* ============================================
+     BORDER RADIUS - Observado en el código
+     ============================================ */
+  
+  --mathboost-radius-sm: 0.5rem;   /* 8px */
+  --mathboost-radius-md: 0.75rem;  /* 12px */
+  --mathboost-radius-lg: 1rem;     /* 16px - liquidGlass */
+  --mathboost-radius-xl: 1.25rem;  /* 20px */
+  --mathboost-radius-2xl: 1.5rem;  /* 24px - botones principales */
+  --mathboost-radius-3xl: 1.75rem; /* 28px - botones grandes */
+  --mathboost-radius-full: 9999px; /* progress bars */
+  
+  /* ============================================
+     LIQUID GLASS EFFECTS - Extraído exacto
+     ============================================ */
+  
+  /* Base Glass */
+  --mathboost-glass-bg: rgba(255, 255, 255, 0.85);
+  --mathboost-glass-backdrop: blur(12px) saturate(200%);
+  --mathboost-glass-border: 1px solid rgba(0, 0, 0, 0.05);
+  --mathboost-glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.08), 0 1px 0 rgba(255, 255, 255, 0.5) inset;
+  
+  /* Hover Glass */
+  --mathboost-glass-hover-bg: rgba(255, 255, 255, 0.95);
+  --mathboost-glass-hover-backdrop: blur(16px) saturate(220%);
+  --mathboost-glass-hover-border: 1px solid rgba(59, 130, 246, 0.2);
+  --mathboost-glass-hover-shadow: 0 12px 48px rgba(0, 0, 0, 0.12), 0 1px 0 rgba(255, 255, 255, 0.7) inset;
+  
+  /* ============================================
+     ANIMACIONES - Extraídas del código
+     ============================================ */
+  
+  /* Durations */
+  --mathboost-duration-fast: 300ms;
+  --mathboost-duration-base: 500ms;
+  --mathboost-duration-slow: 1000ms;
+  --mathboost-duration-pulse: 3s;
+  
+  /* Timing Functions */
+  --mathboost-ease-out: ease-out;
+  --mathboost-ease-in-out: ease-in-out;
+  
+  /* Transforms observados */
+  --mathboost-scale-hover: 1.05;
+  --mathboost-scale-active: 0.95;
+  --mathboost-scale-feedback: 1.10;
+  --mathboost-scale-feedback-error: 0.90;
+  --mathboost-scale-icon-hover: 1.10;
+  
+  /* ============================================
+     SHADOWS & EFFECTS - Observados en uso
+     ============================================ */
+  
+  /* Text Shadows */
+  --mathboost-text-shadow-problem: 0 4px 20px rgba(0, 0, 0, 0.12);
+  --mathboost-text-shadow-feedback-success: 0 8px 32px #ECFDF5;
+  --mathboost-text-shadow-feedback-error: 0 8px 32px #FEF2F2;
+  
+  /* Box Shadows */
+  --mathboost-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --mathboost-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+  --mathboost-shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.08);
+  --mathboost-shadow-xl: 0 12px 48px rgba(0, 0, 0, 0.12);
+  --mathboost-shadow-2xl: 0 25px 50px rgba(0, 0, 0, 0.15);
+  
+  /* ============================================
+     BREAKPOINTS - Mobile First
+     ============================================ */
+  
+  --mathboost-breakpoint-sm: 640px;
+  --mathboost-breakpoint-md: 768px;
+  --mathboost-breakpoint-lg: 1024px;
+  --mathboost-breakpoint-xl: 1280px;
+  
+  /* ============================================
+     Z-INDEX SCALE
+     ============================================ */
+  
+  --mathboost-z-base: 0;
+  --mathboost-z-dropdown: 10;
+  --mathboost-z-sticky: 20;
+  --mathboost-z-modal: 30;
+  --mathboost-z-popover: 40;
+  --mathboost-z-tooltip: 50;
+}
+
+/* ============================================
+   COMPONENT TOKENS - Para referencia futura
+   ============================================ */
+
+/* 
+  DOCUMENTACIÓN DE COMPONENTES OBSERVADOS:
+  
+  1. WELCOME SCREEN CARDS:
+     - background: var(--mathboost-glass-bg)
+     - backdrop-filter: var(--mathboost-glass-backdrop)
+     - border: var(--mathboost-glass-border)
+     - border-radius: var(--mathboost-radius-2xl)
+     - padding: var(--mathboost-padding-card)
+     - box-shadow: var(--mathboost-glass-shadow)
+     
+  2. BOTÓN PRINCIPAL:
+     - background: var(--mathboost-gradient-primary-light)
+     - border: 2px solid rgba(59, 130, 246, 0.2)
+     - border-radius: var(--mathboost-radius-3xl)
+     - padding: var(--mathboost-padding-button-lg)
+     - font-size: var(--mathboost-text-2xl)
+     - font-weight: var(--mathboost-font-medium)
+     
+  3. PROBLEMA MATEMÁTICO:
+     - font-family: var(--mathboost-font-math)
+     - font-size: var(--mathboost-text-9xl)
+     - font-weight: var(--mathboost-font-light)
+     - text-shadow: var(--mathboost-text-shadow-problem)
+     
+  4. PROGRESS BARS:
+     - height: 12px (0.75rem)
+     - background: #E5E7EB
+     - border-radius: var(--mathboost-radius-full)
+     - gradients: var(--mathboost-gradient-blue/green/purple)
+*/

@@ -1,0 +1,45 @@
+{
+  "name": "mathboost-app",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    
+    "protect": "node scripts/mathboost-protector.js",
+    "dashboard": "node scripts/mathboost-dashboard.js",
+    "protect:lint": "npx eslint . --config .eslintrc.mathboost-protector.js",
+    
+    "test:pixel-perfect": "node scripts/pixel-perfect-validator.js",
+    "test:visual": "node scripts/visual-regression-test.js", 
+    "test:strict": "node scripts/mathboost-strict-test.js",
+    
+    "validate:branding": "npm run test:strict",
+    "validate:pre-deploy": "npm run test:strict && npm run protect",
+    "validate:ci": "npm run test:strict"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.39.0",
+    "lucide-react": "^0.525.0",
+    "next": "15.3.5",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@tailwindcss/postcss": "^4",
+    "autoprefixer": "^10.4.21",
+    "eslint": "^9",
+    "eslint-config-next": "15.3.5",
+    "tailwindcss": "^4",
+    "stylelint": "^15.0.0",
+    "stylelint-config-standard": "^34.0.0",
+    "stylelint-config-css-modules": "^4.0.0",
+    "stylelint-value-no-unknown-custom-properties": "^5.0.0",
+    "husky": "^8.0.0",
+    "glob": "^10.0.0",
+    "chalk": "^4.1.2"
+  }
+}
