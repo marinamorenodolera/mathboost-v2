@@ -1,7 +1,7 @@
 'use client';
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Play, Settings, BarChart3, Lightbulb, User, X, ArrowLeft, Clock, RotateCcw, Trophy, Target, Zap, Calendar } from 'lucide-react';
-import { AuthProvider, useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../contexts/AuthContext';
 import { AuthModal } from './auth/AuthModal';
 import { useGameSession } from '../hooks/useGameSession';
 import WelcomeScreen from './screens/WelcomeScreen';
@@ -10,9 +10,9 @@ import MathBoostLanding from './MathBoostLanding';
 const MathBoostApp = () => {
   const { user, profile, loading } = useAuth();
   const { startSession, recordAnswer, completeSession, currentSession } = useGameSession();
-  const [showAuthModal, setShowAuthModal] = useState(false);
   
-  // Estados principales
+  // Estados principales - DEFINIDOS PRIMERO
+  const [showAuthModal, setShowAuthModal] = useState(false);
   const [gameMode, setGameMode] = useState('welcome');
   const [setupStep, setSetupStep] = useState(1);
   const [operation, setOperation] = useState('multiplication');
@@ -287,6 +287,31 @@ const MathBoostApp = () => {
 
   // Responsive
   const [screenSize, setScreenSize] = useState('desktop');
+  
+  // Auto-guardar cuando hay sesión activa y usuario sale/cierra
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      if (currentSession && (gameMode === 'playing' || gameMode === 'tricksPlay')) {
+        console.log('🔄 Auto-guardando sesión antes de salir...')
+        completeSession().catch(console.error)
+      }
+    }
+    
+    const handleVisibilityChange = () => {
+      if (document.hidden && currentSession && (gameMode === 'playing' || gameMode === 'tricksPlay')) {
+        console.log('🔄 Auto-guardando sesión (tab oculto)...')
+        completeSession().catch(console.error)
+      }
+    }
+    
+    window.addEventListener('beforeunload', handleBeforeUnload)
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+    
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload)
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
+    }
+  }, [currentSession, gameMode, completeSession])
   
   useEffect(() => {
     const updateScreenSize = () => {
@@ -2639,4 +2664,5 @@ const MathBoost = () => {
   );
 };
 
+export { MathBoostApp };
 export default MathBoost;

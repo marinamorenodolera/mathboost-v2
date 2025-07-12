@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import AuthModal from './auth/AuthModal';
+import { AuthModal } from './auth/AuthModal';
 import { useAuth } from '../contexts/AuthContext';
 
 const MathBoostLanding = () => {

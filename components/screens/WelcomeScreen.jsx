@@ -8,7 +8,17 @@ const WelcomeScreen = ({ setGameMode }) => {
   const { user, profile, signOut } = useAuth();
   const { stats, loading: statsLoading } = useUserStats();
   
-  if (!user || !profile) return null;
+  // Guard contra valores null/undefined
+  if (!user) return null;
+  
+  // Usar profile por defecto si no existe
+  const safeProfile = profile || {
+    id: user.id,
+    username: user.email?.split('@')[0] || 'usuario',
+    display_name: 'Usuario',
+    avatar_url: '👤',
+    current_level: 1
+  };
 
   const levelSystem = [
     { level: 1, name: 'Aprendiz Numérico', category: 'Aprendiz', weeklyProblemsMin: 50, weeklyProblemsMax: 100, speedTarget: 5.0, emoji: '🌱' },
@@ -29,17 +39,17 @@ const WelcomeScreen = ({ setGameMode }) => {
   ];
 
   const getUserLevelName = (profile) => {
-    const level = levelSystem.find(l => l.level === (profile.current_level || 1));
+    const level = levelSystem.find(l => l.level === (profile?.current_level || 1));
     return level ? level.name : 'Aprendiz Numérico';
   };
 
   const getWeeklyProblemsGoal = (profile) => {
-    const level = levelSystem.find(l => l.level === (profile.current_level || 1));
+    const level = levelSystem.find(l => l.level === (profile?.current_level || 1));
     return level ? level.weeklyProblemsMax : 100;
   };
 
   const getWeeklySpeedGoal = (profile) => {
-    const level = levelSystem.find(l => l.level === (profile.current_level || 1));
+    const level = levelSystem.find(l => l.level === (profile?.current_level || 1));
     return level ? level.speedTarget : 5.0;
   };
 
@@ -57,13 +67,16 @@ const WelcomeScreen = ({ setGameMode }) => {
           {/* Avatar sin círculo */}
           <div className="relative mb-6">
             <div className="w-20 h-20 mx-auto flex items-center justify-center">
-              <span className="text-5xl animate-bounce">{profile.avatar_url || '👤'}</span>
+              <span className="text-5xl animate-bounce">{safeProfile.avatar_url || '👤'}</span>
             </div>
           </div>
           
-          {/* Subtítulo */}
+          {/* Username y nivel */}
+          <p className="text-lg text-gray-800 font-medium mb-1" style={{ fontFamily: 'Inter, -apple-system, sans-serif' }}>
+            {safeProfile.username || safeProfile.display_name || 'Usuario'}
+          </p>
           <p className="text-base text-gray-600 mb-2" style={{ fontFamily: 'Inter, -apple-system, sans-serif' }}>
-            {getUserLevelName(profile)} • Nivel {profile.current_level || 1}
+            {getUserLevelName(safeProfile)} • Nivel {safeProfile.current_level || 1}
           </p>
         </div>
 
@@ -127,20 +140,20 @@ const WelcomeScreen = ({ setGameMode }) => {
                   {stats?.total_problems_this_week || 0}
                 </div>
                 <div className="text-sm text-gray-600">
-                  / {getWeeklyProblemsGoal(profile)}
+                  / {getWeeklyProblemsGoal(safeProfile)}
                 </div>
               </div>
               <div className="h-3 bg-gray-200 rounded-full overflow-hidden">
                 <div 
                   className="h-full bg-gradient-to-r from-blue-500 to-blue-600 rounded-full transition-all duration-1000"
                   style={{ 
-                    width: `${Math.min(100, ((stats?.total_problems_this_week || 0) / getWeeklyProblemsGoal(profile)) * 100)}%` 
+                    width: `${Math.min(100, ((stats?.total_problems_this_week || 0) / getWeeklyProblemsGoal(safeProfile)) * 100)}%` 
                   }}
                 />
               </div>
               <div className="text-xs text-center text-gray-600 mt-2">
-                {getWeeklyProblemsGoal(profile) - (stats?.total_problems_this_week || 0) > 0 
-                  ? `${getWeeklyProblemsGoal(profile) - (stats?.total_problems_this_week || 0)} para completar meta`
+                {getWeeklyProblemsGoal(safeProfile) - (stats?.total_problems_this_week || 0) > 0 
+                  ? `${getWeeklyProblemsGoal(safeProfile) - (stats?.total_problems_this_week || 0)} para completar meta`
                   : '¡Meta semanal completada! 🎉'
                 }
               </div>
@@ -163,10 +176,10 @@ const WelcomeScreen = ({ setGameMode }) => {
             <div className="space-y-3">
               <div className="flex items-baseline gap-2">
                 <div className="text-2xl font-bold text-gray-800" style={{ fontFamily: 'Georgia, serif' }}>
-                  {stats?.average_response_time || 0}s
+                  {parseFloat(stats?.average_response_time || 0).toFixed(1)}s
                 </div>
                 <div className="text-sm text-gray-600">
-                  / {getWeeklySpeedGoal(profile)}s
+                  / {getWeeklySpeedGoal(safeProfile)}s
                 </div>
               </div>
               <div className="h-3 bg-gray-200 rounded-full overflow-hidden">
@@ -174,16 +187,16 @@ const WelcomeScreen = ({ setGameMode }) => {
                   className="h-full bg-gradient-to-r from-green-400 to-green-600 rounded-full transition-all duration-1000"
                   style={{ 
                     width: (stats?.average_response_time || 0) > 0 
-                      ? `${Math.min(100, Math.max(0, (getWeeklySpeedGoal(profile) - (stats?.average_response_time || 0)) / getWeeklySpeedGoal(profile) * 100))}%`
+                      ? `${Math.min(100, Math.max(0, (getWeeklySpeedGoal(safeProfile) - (stats?.average_response_time || 0)) / getWeeklySpeedGoal(safeProfile) * 100))}%`
                       : '0%'
                   }}
                 />
               </div>
               <div className="text-xs text-center text-gray-600 mt-2">
-                {(stats?.average_response_time || 0) > 0 && (stats?.average_response_time || 0) <= getWeeklySpeedGoal(profile)
+                {(stats?.average_response_time || 0) > 0 && (stats?.average_response_time || 0) <= getWeeklySpeedGoal(safeProfile)
                   ? '¡Objetivo de velocidad alcanzado! 🎯'
                   : (stats?.average_response_time || 0) > 0
-                    ? `Mejora ${((stats?.average_response_time || 0) - getWeeklySpeedGoal(profile)).toFixed(1)}s para meta`
+                    ? `Mejora ${((stats?.average_response_time || 0) - getWeeklySpeedGoal(safeProfile)).toFixed(1)}s para meta`
                     : 'Comienza a entrenar para ver tu progreso'
                 }
               </div>
@@ -210,7 +223,7 @@ const WelcomeScreen = ({ setGameMode }) => {
           </div>
           <div className="p-4 rounded-xl bg-white/85 backdrop-blur-xl border border-black/5 shadow-lg hover:bg-white/95 hover:backdrop-blur-2xl hover:shadow-xl hover:border-blue-500/20 text-center transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer">
             <div className="text-2xl mb-2">⏱️</div>
-            <div className="text-lg font-bold text-gray-800 mb-1" style={{ fontFamily: 'Georgia, serif' }}>{(stats?.total_hours_invested || 0).toFixed(1)}</div>
+            <div className="text-lg font-bold text-gray-800 mb-1" style={{ fontFamily: 'Georgia, serif' }}>{(stats?.total_hours_invested || 0).toFixed(2)}</div>
             <div className="text-xs text-gray-600">horas totales</div>
           </div>
         </div>

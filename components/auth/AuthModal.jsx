@@ -1,10 +1,17 @@
 'use client';
-import { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { LoginForm } from './LoginForm'
 import { RegisterForm } from './RegisterForm'
 
-export const AuthModal = ({ isOpen, onClose }) => {
-  const [mode, setMode] = useState('login') // 'login' or 'register'
+export const AuthModal = ({ isOpen, onClose, initialMode = 'login' }) => {
+  const [mode, setMode] = useState(initialMode) // 'login' or 'register'
+
+  // Reset mode when modal opens with a different initial mode
+  useEffect(() => {
+    if (isOpen) {
+      setMode(initialMode)
+    }
+  }, [isOpen, initialMode])
 
   if (!isOpen) return null
 

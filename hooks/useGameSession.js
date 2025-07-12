@@ -16,26 +16,55 @@ export const useGameSession = () => {
   })
 
   const startSession = async (operation, settings = {}) => {
+    console.log('🎮 INICIO startSession:', { operation, settings, userId: user?.id })
+    
     if (!user) {
+      console.error('❌ Usuario no autenticado en startSession')
       throw new Error('Usuario no autenticado')
     }
 
     setLoading(true)
     
     try {
+      // Campos correctos para la estructura real
+      const sessionData = {
+        user_id: user.id,
+        operation_type: operation || 'multiplication',
+        selected_tables: settings.selectedTables || [1,2,3,4,5,6,7,8,9,10],
+        number_range: settings.difficulty || 'medium',
+        total_problems: 0,
+        correct_answers: 0,
+        status: 'active',
+        started_at: new Date().toISOString()
+      }
+      
+      console.log('📤 Enviando datos de sesión:', sessionData)
+      
       const { data, error } = await supabase
         .from('game_sessions')
-        .insert({
-          user_id: user.id,
-          operation_type: operation,
-          settings: settings,
-          status: 'in_progress',
-          started_at: new Date().toISOString()
-        })
+        .insert(sessionData)
         .select()
         .single()
 
-      if (error) throw error
+      console.log('📨 Respuesta de game_sessions:', { data, error })
+      
+      if (error) {
+        console.error('❌ ERROR 400 DETALLADO:', {
+          message: error.message,
+          code: error.code,
+          details: error.details,
+          hint: error.hint,
+          statusCode: error.statusCode,
+          statusText: error.statusText
+        })
+        
+        // Log adicional para debugging
+        console.error('🔍 Datos que causaron el error:', sessionData)
+        console.error('🔍 User ID que se usó:', user.id)
+        console.error('🔍 Error completo:', error)
+        
+        throw error
+      }
 
       setCurrentSession(data)
       
@@ -48,10 +77,10 @@ export const useGameSession = () => {
         problems: []
       }
 
-      console.log('✅ Sesión iniciada:', data.id)
+      console.log('✅ Sesión iniciada exitosamente:', data.id)
       return data
     } catch (error) {
-      console.error('❌ Error al iniciar sesión:', error)
+      console.error('❌ Error al iniciar sesión (catch):', error)
       throw error
     } finally {
       setLoading(false)
@@ -59,29 +88,53 @@ export const useGameSession = () => {
   }
 
   const recordAnswer = async (problem, userAnswer, responseTime, isCorrect) => {
+    console.log('💾 INICIO recordAnswer:', { 
+      problem, userAnswer, responseTime, isCorrect,
+      sessionId: currentSession?.id,
+      userId: user?.id 
+    })
+    
     if (!currentSession) {
       console.warn('⚠️ No hay sesión activa')
       return
     }
 
     try {
+      const attemptData = {
+        session_id: currentSession.id,
+        user_id: user.id,
+        number_1: problem.number1,
+        number_2: problem.number2,
+        operation_type: problem.operation,
+        correct_answer: problem.answer,
+        user_answer: parseInt(userAnswer),
+        response_time_ms: responseTime
+        // is_correct se calcula automáticamente en Supabase
+      }
+      
+      console.log('📤 Enviando datos de intento:', attemptData)
+      console.log('🔍 DEBUGGING - Datos enviados:', JSON.stringify(attemptData, null, 2))
+      
       const { data, error } = await supabase
         .from('problem_attempts')
-        .insert({
-          session_id: currentSession.id,
-          user_id: user.id,
-          number_1: problem.number1,
-          number_2: problem.number2,
-          operation: problem.operation,
-          correct_answer: problem.answer,
-          user_answer: parseInt(userAnswer),
-          response_time: responseTime,
-          is_correct: isCorrect
-        })
+        .insert(attemptData)
         .select()
         .single()
 
-      if (error) throw error
+      console.log('📨 Respuesta de problem_attempts:', { data, error })
+      console.log('📨 RESPUESTA SUPABASE data:', data)
+      console.log('📨 RESPUESTA SUPABASE error:', error)
+      console.log('📨 ERROR COMPLETO:', JSON.stringify(error, null, 2))
+      
+      if (error) {
+        console.error('❌ Error específico al guardar respuesta:', {
+          message: error.message,
+          code: error.code,
+          details: error.details,
+          hint: error.hint
+        })
+        throw error
+      }
 
       // Update session stats
       sessionStats.current.totalProblems += 1
@@ -100,15 +153,17 @@ export const useGameSession = () => {
         isCorrect
       })
 
-      console.log('✅ Respuesta guardada:', data.id)
+      console.log('✅ Respuesta guardada exitosamente:', data.id)
       return data
     } catch (error) {
-      console.error('❌ Error al guardar respuesta:', error)
+      console.error('❌ Error al guardar respuesta (catch):', error)
       throw error
     }
   }
 
   const completeSession = async () => {
+    console.log('🏁 INICIO completeSession:', { sessionId: currentSession?.id })
+    
     if (!currentSession) {
       console.warn('⚠️ No hay sesión activa')
       return
@@ -124,27 +179,39 @@ export const useGameSession = () => {
         ? ((stats.correctAnswers / stats.totalProblems) * 100).toFixed(1)
         : 0
 
-      const sessionDuration = new Date() - new Date(currentSession.started_at)
+      // Campos correctos para la estructura real
+      const sessionDuration = Math.floor((new Date() - new Date(currentSession.started_at)) / 1000)
+      
+      const updateData = {
+        status: 'completed',
+        total_problems: stats.totalProblems,
+        correct_answers: stats.correctAnswers,
+        session_duration_seconds: sessionDuration,
+        completed_at: new Date().toISOString()
+      }
+      
+      console.log('📤 Completando sesión con datos:', updateData)
 
       const { data, error } = await supabase
         .from('game_sessions')
-        .update({
-          status: 'completed',
-          completed_at: new Date().toISOString(),
-          total_problems: stats.totalProblems,
-          correct_answers: stats.correctAnswers,
-          incorrect_answers: stats.incorrectAnswers,
-          accuracy_percentage: parseFloat(accuracy),
-          average_response_time: parseFloat(averageResponseTime),
-          session_duration: Math.round(sessionDuration / 1000) // segundos
-        })
+        .update(updateData)
         .eq('id', currentSession.id)
         .select()
         .single()
 
-      if (error) throw error
+      console.log('📨 Respuesta de completar sesión:', { data, error })
 
-      console.log('✅ Sesión completada:', data.id)
+      if (error) {
+        console.error('❌ Error específico al completar sesión:', {
+          message: error.message,
+          code: error.code,
+          details: error.details,
+          hint: error.hint
+        })
+        throw error
+      }
+
+      console.log('✅ Sesión completada exitosamente:', data.id)
       console.log('📊 Stats finales:', {
         totalProblems: stats.totalProblems,
         correctAnswers: stats.correctAnswers,
@@ -155,7 +222,7 @@ export const useGameSession = () => {
       setCurrentSession(null)
       return data
     } catch (error) {
-      console.error('❌ Error al completar sesión:', error)
+      console.error('❌ Error al completar sesión (catch):', error)
       throw error
     }
   }
